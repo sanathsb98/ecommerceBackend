@@ -5,7 +5,7 @@ const registerNewUser = require('../controller/user-controller').registerNewUser
 const router = express.Router()
 
 router.get("/api/users",getAllUsers)
-router.post("/api/registernewuser",registerNewUser)
+router.post("/api/signup",registerNewUser)
 
 
 module.exports = router;
