@@ -1,4 +1,5 @@
 const User = require('../modal/user-modal')
+const bcrypt = require('bcrypt');
 
 
 
@@ -6,7 +7,7 @@ const User = require('../modal/user-modal')
 const getAllUsers = async(req,res,next) =>{
 
     let user;
-
+   
     try {
         user = await User.find()
     } catch (err) {
@@ -20,10 +21,15 @@ const getAllUsers = async(req,res,next) =>{
     }
 }
 
+
 //register a new user:
 const registerNewUser = async(req,res,next) => {
         const {name,email,password} = req.body;
         let isRegistered;
+
+        //hashing the password for security
+        const salt = await bcrypt.genSalt(10)
+        const hashedPassword = await bcrypt.hash(password,salt)
 
         try{
           isRegistered = await User.findOne({email})
@@ -41,7 +47,7 @@ const registerNewUser = async(req,res,next) => {
             const newUser = new User({
                 name,
                 email,
-                password
+                hashedPassword
              })
              await newUser.save()
              return res.status(200).json({newUser})

@@ -7,4 +7,5 @@ const router = express.Router()
 router.get("/api/users",getAllUsers)
 router.post("/api/registernewuser",registerNewUser)
 
+
 module.exports = router;
