@@ -55,7 +55,7 @@ const registerNewUser = async(req,res,next) => {
 
 // get user login details:
 const signin = async (req, res) => {
-    const { email } = req.body;
+    const { email } = req.query;
     let loginDetails;
     try {
         loginDetails = await User.findOne({ email })
