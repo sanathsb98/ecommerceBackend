@@ -28,7 +28,6 @@ const registerNewUser = async(req,res,next) => {
         //encrypt password
         const encryptedPassword = await bcrypt.hash(password,5)
       
-
         try{
           isRegistered = await User.findOne({email})
 
@@ -41,7 +40,6 @@ const registerNewUser = async(req,res,next) => {
         }
 
         try{
-
             const newUser = new User({
                 name,
                 email,
@@ -55,7 +53,21 @@ const registerNewUser = async(req,res,next) => {
         }
 }
 
+// get user login details:
+const signin = async (req, res) => {
+    const { email } = req.body;
+    let loginDetails;
+    try {
+        loginDetails = await User.findOne({ email })
+        res.status(200).send({loginDetails})
+    } catch (err) {
+        res.status(404).send({ message: 'no user found' })
+    }
+}
+
+
 module.exports = {
     getAllUsers,
-    registerNewUser
+    registerNewUser,
+    signin
 }
