@@ -55,41 +55,41 @@ const registerNewUser = async(req,res,next) => {
         }
 }
 
-// get user login details:
 const signin = async (req, res) => {
-    const { email,password } = req.body;
-    console.log(email)
-    console.log(password)
-    let loginDetails;
+    const { email, password } = req.body;
+
+    // Logging the provided email and password for debugging purposes
+    console.log(email);
+    console.log(password);
+
     try {
+        // Finding a user with the provided email in the database
+        const loginDetails = await User.findOne({ email });
 
-        loginDetails = await User.findOne({ email })
-        console.log(loginDetails.id)
+        // If no user found with the provided email
+        if (!loginDetails) {
+            res.status(401).send({ message: 'No user found' });
+        } else {
+            // Comparing the provided password with the hashed password stored in the database
+            const isValidPassword = await bcrypt.compare(password, loginDetails.password);
 
-        if(!loginDetails)
-        {
-            res.status(401).send({message:'no user found'})
-        }else{
-
-           const isValidPassword =  await bcrypt.compare(password,loginDetails.password)
-
-           if(isValidPassword){
-            const token = generateToken(loginDetails)
-            res.json({token})
-
-           }else{
-            res.status(200).send({message:'incorrect password'})
-           }
-           
-          
+            // If the password is valid
+            if (isValidPassword) {
+                // Generating a JWT token for the authenticated user
+                const token = generateToken(loginDetails);
+                // Sending the token in the response
+                res.json({ token });
+            } else {
+                // If the password is incorrect
+                res.status(200).send({ message: 'Incorrect password' });
+            }
         }
-
-    
-      
     } catch (err) {
-        res.status(404).send({ message: 'no user found' })
+        // Handling any errors that occur during the process
+        res.status(404).send({ message: 'No user found' });
     }
-}
+};
+
 
 
 module.exports = {
