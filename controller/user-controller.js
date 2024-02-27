@@ -78,7 +78,8 @@ const signin = async (req, res) => {
                 // Generating a JWT token for the authenticated user
                 const token = generateToken(loginDetails);
                 // Sending the token in the response
-                res.json({ token });
+                res.status(200).send({token : token})
+               
             } else {
                 // If the password is incorrect
                 res.status(200).send({ message: 'Incorrect password' });
