@@ -1,5 +1,7 @@
 const User = require('../modal/user-modal')
-const bcrypt = require('bcryptjs')
+const bcrypt = require('bcryptjs');
+const generateToken = require('../utils');
+
 
 //getting all user data:
 const getAllUsers = async(req,res,next) =>{
@@ -55,11 +57,35 @@ const registerNewUser = async(req,res,next) => {
 
 // get user login details:
 const signin = async (req, res) => {
-    const { email } = req.query;
+    const { email,password } = req.body;
+    console.log(email)
+    console.log(password)
     let loginDetails;
     try {
+
         loginDetails = await User.findOne({ email })
-        res.status(200).send({loginDetails})
+        console.log(loginDetails.id)
+
+        if(!loginDetails)
+        {
+            res.status(401).send({message:'no user found'})
+        }else{
+
+           const isValidPassword =  await bcrypt.compare(password,loginDetails.password)
+
+           if(isValidPassword){
+            const token = generateToken(loginDetails)
+            res.json({token})
+
+           }else{
+            res.status(200).send({message:'incorrect password'})
+           }
+           
+          
+        }
+
+    
+      
     } catch (err) {
         res.status(404).send({ message: 'no user found' })
     }
