@@ -9,7 +9,7 @@ const router = express.Router()
 router.get("/api/users", getAllUsers)
 router.post("/api/signup", registerNewUser)
 router.post("/api/signin", signin)
-router.get("/api/data", verifyToken, (req, res) => {
+router.post("/api/data", verifyToken, (req, res) => {
     res.json({ message: `Welcome ${req.body.email}! this is protected data` })
 })
 
