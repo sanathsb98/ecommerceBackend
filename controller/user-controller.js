@@ -66,6 +66,7 @@ const signin = async (req, res) => {
         // Finding a user with the provided email in the database
         const loginDetails = await User.findOne({ email });
 
+
         // If no user found with the provided email
         if (!loginDetails) {
             res.status(401).send({ message: 'No user found' });
@@ -78,7 +79,7 @@ const signin = async (req, res) => {
                 // Generating a JWT token for the authenticated user
                 const token = generateToken(loginDetails);
                 // Sending the token in the response
-                res.status(200).send({token : token})
+                res.status(200).send({token : token ,loginDetails : loginDetails})
                
             } else {
                 // If the password is incorrect
