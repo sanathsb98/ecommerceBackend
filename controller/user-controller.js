@@ -1,4 +1,5 @@
 const User = require('../modal/user-modal')
+const Posts = require('../modal/posts-modal')
 const bcrypt = require('bcryptjs');
 const generateToken = require('../utils');
 
@@ -55,6 +56,7 @@ const registerNewUser = async(req,res,next) => {
         }
 }
 
+// new user signin:
 const signin = async (req, res) => {
     const { email, password } = req.body;
 
@@ -92,10 +94,48 @@ const signin = async (req, res) => {
     }
 };
 
+// post to database:
+const postImage = async (req, res) => {
+    const { userid, image, caption, likes } = req.body;
+
+    console.log(userid)
+    console.log(image)
+    console.log(caption)
+    console.log(likes)
+
+    try {
+        const post = new Posts({
+            userid : userid,
+            image : image,
+            caption : caption,
+            likes : likes
+        })
+
+        await post.save()
+        return res.status(200).json({post})
+
+    } catch (err) {
+        res.status(400).send({ message: err })
+    }
+
+}
+
+//show all posts:
+const allPosts = async (req, res) => {
+    try {
+        const posts = await Posts.find()
+        res.status(200).json({posts})
+    } catch (err) {
+        res.status(200).send({ message: err })
+    }
+}
+
 
 
 module.exports = {
     getAllUsers,
     registerNewUser,
-    signin
+    signin,
+    postImage,
+    allPosts
 }
