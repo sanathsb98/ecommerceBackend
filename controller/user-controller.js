@@ -96,7 +96,7 @@ const signin = async (req, res) => {
 
 // post to database:
 const postImage = async (req, res) => {
-    const { userid, image, caption, likes } = req.body;
+    const { userid, name, username, userprofilepic, image, caption, likes } = req.body;
 
     console.log(userid)
     console.log(image)
@@ -106,6 +106,9 @@ const postImage = async (req, res) => {
     try {
         const post = new Posts({
             userid : userid,
+            name : name,
+            username : username,
+            userprofilepic : userprofilepic,
             image : image,
             caption : caption,
             likes : likes

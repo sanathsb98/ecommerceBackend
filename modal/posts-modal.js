@@ -6,6 +6,17 @@ const PostsModal = new Schema({
         type: String,
         required: true,
     },
+    name: {
+        type: String,
+        required: true,
+    },
+    username: {
+        type: String,
+        required: true,
+    },
+    userprofilepic: {
+        type: String,
+    },
     image: {
         type: String,
         required: true,
