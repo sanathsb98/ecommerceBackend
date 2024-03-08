@@ -133,7 +133,7 @@ const allPosts = async (req, res) => {
         console.log(perpage)
 
         // give response based on the page number
-        const posts = await Posts.find().skip((page - 1)*perpage).limit(perpage)
+        const posts = await Posts.find().sort({createdAt:-1}).skip((page - 1)*perpage).limit(perpage)
 
         res.status(200).json({ posts })
     } catch (err) {
