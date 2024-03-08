@@ -125,9 +125,17 @@ const postImage = async (req, res) => {
 
 //show all posts:
 const allPosts = async (req, res) => {
+
     try {
-        const posts = await Posts.find()
-        res.status(200).json({posts})
+        const page = parseInt(req.query.page)
+        const perpage = parseInt(req.query.perPage)
+        console.log(page)
+        console.log(perpage)
+
+        // give response based on the page number
+        const posts = await Posts.find().skip((page - 1)*perpage).limit(perpage)
+
+        res.status(200).json({ posts })
     } catch (err) {
         res.status(200).send({ message: err })
     }
